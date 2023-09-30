@@ -1,10 +1,19 @@
 pipeline {
-    agent any  // Menggunakan agen Jenkins yang tersedia
-
+    agent {
+        docker {
+            image 'node:16-buster-slim'
+            args '-p 3000:3000'
+        }
+    }
     stages {
         stage('Build') {
             steps {
-                sh 'npm install'  // Langkah-langkah build Anda di sini
+                sh 'npm install'
+            }
+        }
+        stage('Test') { 
+            steps {
+                sh './jenkins/scripts/test.sh' 
             }
         }
     }
